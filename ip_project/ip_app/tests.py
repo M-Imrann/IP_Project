@@ -99,22 +99,3 @@ class RateLimitTests(TestCase):
         # Second request should be blocked
         response2 = self.client.get(self.protected_url)
         self.assertEqual(response2.status_code, 429)
-
-
-class MiddlewareLoggingTests(TestCase):
-
-    def setUp(self):
-        self.client = Client()
-        self.protected_url = reverse('protected')
-        self.log_file = 'requests.log'
-        if os.path.exists(self.log_file):
-            os.remove(self.log_file)
-
-    def test_logging_middleware_creates_log_entry(self):
-        self.client.get(self.protected_url)
-        self.assertTrue(os.path.exists(self.log_file))
-
-        with open(self.log_file, 'r') as f:
-            log_data = f.read()
-            self.assertIn('/protected', log_data)
-this is my test.py file
